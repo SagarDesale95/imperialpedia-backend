@@ -1,10 +1,14 @@
 # Imperialpedia Backend
 
 ## 🚀 Live API
-https://imperialpedia-backend.onrender.com
+Target Domain: https://ir.baalvion.com
+
+Render Default (before custom domain): https://imperialpedia-backend.onrender.com
 
 ## 📄 Swagger Docs
-https://imperialpedia-backend.onrender.com/docs
+https://ir.baalvion.com/docs
+
+Render Default (before custom domain): https://imperialpedia-backend.onrender.com/docs
 
 ## 🛠 Tech Stack
 - FastAPI
@@ -22,6 +26,7 @@ https://imperialpedia-backend.onrender.com/docs
 
 ## 🔐 CORS
 Enabled for:
+- https://ir.baalvion.com
 - https://imperialpedia.com
 
 ## ✅ Status
@@ -30,3 +35,9 @@ All APIs tested and working (Create, Read, Update, Delete)
 ## ⚙️ Setup
 pip install -r requirements.txt
 uvicorn app.main:app --reload
+
+## Environment Variables
+- `DATABASE_URL`: Neon PostgreSQL connection string (SSL required).
+- `OPENAI_API_KEY` (optional): Used by `POST /api/ai/generate`.
+- `MOCK_AI`: Set `1` to return mock AI output without calling OpenAI.
+- `CORS_ORIGINS`: Comma-separated allowed frontend origins (defaults to `https://ir.baalvion.com,https://imperialpedia.com`).

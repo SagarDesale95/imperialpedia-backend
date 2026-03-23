@@ -10,7 +10,12 @@ from app.routers import ai, articles, categories, glossary, seo, tags
 
 app = FastAPI(title="Imperialpedia Backend", version="1.0.0", redirect_slashes=False)
 
-_origins = os.getenv("CORS_ORIGINS", "*").strip()
+# Default CORS origins for official domains.
+# Override via CORS_ORIGINS env var (comma-separated) for flexibility.
+_origins = os.getenv(
+    "CORS_ORIGINS",
+    "https://ir.baalvion.com,https://imperialpedia.com",
+).strip()
 _cors_list = [o.strip() for o in _origins.split(",") if o.strip()] or ["*"]
 app.add_middleware(
     CORSMiddleware,

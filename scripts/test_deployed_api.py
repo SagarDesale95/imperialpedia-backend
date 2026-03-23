@@ -128,6 +128,26 @@ def main() -> None:
     status, payload = req("DELETE", f"/api/categories/{cat_id}")
     assert_200("DELETE /api/categories/{id}", status, payload)
 
+    # Post-delete verification
+    status, payload = req("GET", f"/api/articles/{article_id}")
+    if status != 404:
+        raise RuntimeError(f"POST-DELETE verification failed for article: expected 404 got {status} -> {payload}")
+    print("POST-DELETE verification: GET /api/articles/{id} => 404 OK")
+
+    status, payload = req("GET", "/api/glossary")
+    assert_200("GET /api/glossary (after delete)", status, payload)
+    found_glossary = any(row.get("slug") == glossary_slug for row in payload.get("data", []))
+    if found_glossary:
+        raise RuntimeError("POST-DELETE verification failed: glossary slug still exists in list")
+    print("POST-DELETE verification: glossary slug absent OK")
+
+    status, payload = req("GET", "/api/categories")
+    assert_200("GET /api/categories (after delete)", status, payload)
+    found_category = any(row.get("slug") == cat_slug for row in payload.get("data", []))
+    if found_category:
+        raise RuntimeError("POST-DELETE verification failed: category slug still exists in list")
+    print("POST-DELETE verification: category slug absent OK")
+
     print(f"All required endpoints returned 200 at {BASE_URL}")
 
 
