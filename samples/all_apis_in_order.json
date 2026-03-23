@@ -1,0 +1,182 @@
+{
+  "base_url": "http://127.0.0.1:8000",
+  "note": "Run: alembic upgrade head && python scripts/seed_dev_data.py then uvicorn. Use category_id from step 1 response in step 3 (often 1).",
+  "steps": [
+    {
+      "step": 1,
+      "method": "GET",
+      "path": "/api/categories",
+      "body": null,
+      "expect": 200
+    },
+    {
+      "step": 2,
+      "method": "POST",
+      "path": "/api/categories",
+      "body": {
+        "name": "Investing",
+        "slug": "investing",
+        "parent_id": null
+      },
+      "expect": 200
+    },
+    {
+      "step": 3,
+      "method": "GET",
+      "path": "/api/categories",
+      "body": null,
+      "expect": 200
+    },
+    {
+      "step": 4,
+      "method": "PUT",
+      "path": "/api/categories/1",
+      "body": {
+        "name": "Investing Hub",
+        "slug": "investing",
+        "parent_id": null
+      },
+      "expect": 200,
+      "note": "Replace 1 with your category id if different."
+    },
+    {
+      "step": 5,
+      "method": "GET",
+      "path": "/api/tags",
+      "body": null,
+      "expect": 200
+    },
+    {
+      "step": 6,
+      "method": "POST",
+      "path": "/api/tags",
+      "body": {
+        "name": "Markets",
+        "slug": "markets"
+      },
+      "expect": 200
+    },
+    {
+      "step": 7,
+      "method": "GET",
+      "path": "/api/articles",
+      "body": null,
+      "expect": 200
+    },
+    {
+      "step": 8,
+      "method": "POST",
+      "path": "/api/articles",
+      "body": {
+        "title": "How markets work",
+        "slug": "how-markets-work",
+        "content": "<p>Body for DB test.</p>",
+        "category_id": 1,
+        "tags": ["markets", "education"],
+        "status": "published",
+        "seo_title": "How markets work",
+        "seo_description": "Test article",
+        "featured_image": null,
+        "author_id": 1
+      },
+      "expect": 200,
+      "note": "category_id must exist (from step 2)."
+    },
+    {
+      "step": 9,
+      "method": "GET",
+      "path": "/api/articles/1",
+      "body": null,
+      "expect": 200,
+      "note": "Use id returned from step 8 if not 1."
+    },
+    {
+      "step": 10,
+      "method": "PUT",
+      "path": "/api/articles/1",
+      "body": {
+        "title": "How markets work (updated)",
+        "slug": "how-markets-work",
+        "status": "review"
+      },
+      "expect": 200
+    },
+    {
+      "step": 11,
+      "method": "GET",
+      "path": "/api/glossary",
+      "body": null,
+      "expect": 200
+    },
+    {
+      "step": 12,
+      "method": "POST",
+      "path": "/api/glossary",
+      "body": {
+        "term": "Dividend",
+        "definition": "Distribution of earnings to shareholders.",
+        "slug": "dividend",
+        "related_terms": ["yield", "payout"]
+      },
+      "expect": 200
+    },
+    {
+      "step": 13,
+      "method": "PUT",
+      "path": "/api/glossary/1",
+      "body": {
+        "definition": "Updated definition for PUT test."
+      },
+      "expect": 200,
+      "note": "Use glossary id from step 12 response if not 1."
+    },
+    {
+      "step": 14,
+      "method": "GET",
+      "path": "/api/seo/index-status",
+      "body": null,
+      "expect": 200
+    },
+    {
+      "step": 15,
+      "method": "GET",
+      "path": "/api/seo/sitemap",
+      "body": null,
+      "expect": 200
+    },
+    {
+      "step": 16,
+      "method": "POST",
+      "path": "/api/ai/generate",
+      "body": {
+        "prompt": "One sentence: what is a stock?"
+      },
+      "expect": 200,
+      "note": "With OPENAI_API_KEY: real OpenAI. Else set MOCK_AI=1 in .env for 200 mock response."
+    },
+    {
+      "step": 17,
+      "method": "DELETE",
+      "path": "/api/articles/1",
+      "body": null,
+      "expect": 200,
+      "note": "Optional cleanup; use correct article id."
+    },
+    {
+      "step": 18,
+      "method": "DELETE",
+      "path": "/api/glossary/1",
+      "body": null,
+      "expect": 200,
+      "note": "Optional cleanup."
+    },
+    {
+      "step": 19,
+      "method": "DELETE",
+      "path": "/api/categories/1",
+      "body": null,
+      "expect": 200,
+      "note": "Only if no articles reference it; delete articles first or use empty category."
+    }
+  ]
+}

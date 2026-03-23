@@ -1,0 +1,61 @@
+{
+  "order": [
+    "1. POST /api/categories — create parent category first",
+    "2. POST /api/tags — optional; article.tags array is separate from this table",
+    "3. POST /api/articles — use category_id from step 1 response",
+    "4. POST /api/glossary",
+    "5. SEO rows: no POST route; run scripts/seed_dev_data.py or insert in DB",
+    "6. POST /api/ai/generate — needs OPENAI_API_KEY in .env"
+  ],
+  "POST /api/categories": {
+    "name": "Investing",
+    "slug": "investing",
+    "parent_id": null
+  },
+  "POST /api/categories (child)": {
+    "name": "Stocks",
+    "slug": "stocks",
+    "parent_id": 1
+  },
+  "PUT /api/categories/{id}": {
+    "name": "Investing (updated)",
+    "slug": "investing",
+    "parent_id": null
+  },
+  "POST /api/tags": {
+    "name": "Markets",
+    "slug": "markets"
+  },
+  "POST /api/articles": {
+    "title": "How markets work",
+    "slug": "how-markets-work",
+    "content": "<p>Short body for testing.</p>",
+    "category_id": 1,
+    "tags": ["markets", "education"],
+    "status": "published",
+    "seo_title": "How markets work | Imperialpedia",
+    "seo_description": "Intro to markets for tests.",
+    "featured_image": "https://example.com/image.jpg",
+    "author_id": 1
+  },
+  "PUT /api/articles/{id}": {
+    "title": "How markets work (edited)",
+    "slug": "how-markets-work",
+    "status": "review"
+  },
+  "POST /api/glossary": {
+    "term": "Dividend",
+    "definition": "Cash or stock paid by a company to shareholders.",
+    "slug": "dividend",
+    "related_terms": ["yield", "payout ratio"]
+  },
+  "PUT /api/glossary/{id}": {
+    "term": "Dividend",
+    "definition": "Updated definition for testing PUT.",
+    "slug": "dividend"
+  },
+  "POST /api/ai/generate": {
+    "prompt": "Write one sentence explaining what a stock is."
+  },
+  "status_enum": ["draft", "review", "published"]
+}
